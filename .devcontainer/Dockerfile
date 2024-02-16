@@ -3,7 +3,12 @@
 
 FROM rust:1.76.0
 
-RUN useradd --create-home --shell /bin/bash dev
+RUN useradd --create-home --shell /bin/bash dev \
+    && apt-get update \
+    && apt-get install --assume-yes --no-install-recommends \
+    g++-mingw-w64-x86-64 \
+    && rm -rf /var/lib/apt/lists/*
 
 USER dev
 
+RUN rustup target add x86_64-pc-windows-gnu
